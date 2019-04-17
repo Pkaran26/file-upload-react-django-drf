@@ -4,15 +4,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import *
+import json
 
 class FileUploadView(APIView):
     parser_class = (FileUploadParser,)
 
     def post(self, request, format=None):
-        if 'file' not in request.data:
+        if 'file' not in request.data and 'payload' not in request.data:
             raise ParseError("Empty content")
+
         f = request.data['file']
-        print(f)
+        data = json.loads(request.data['payload'])
+        print(data)
         obj = Files.objects.create()
         obj.file = f
         obj.save()
