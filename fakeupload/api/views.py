@@ -16,8 +16,9 @@ class FileUploadView(APIView):
         f = request.data['file']
         data = json.loads(request.data['payload'])
         print(data)
-        obj = Files.objects.create()
-        obj.file = f
+        obj = Files.objects.create(uploader= data['name'], filename=f.name, file=f)
         obj.save()
+        
+        print()
         #mymodel.my_file_field.save(f.name, f, save=True)
         return Response(status=status.HTTP_201_CREATED)
